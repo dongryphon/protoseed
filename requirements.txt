@@ -1,0 +1,6 @@
+qrcode
+pillow
+base58
+segno
+qrcodegen
+pycryptodome
