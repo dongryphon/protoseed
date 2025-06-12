@@ -1,7 +1,7 @@
 # protoseed - Bitcoin seed phrases and 2FA
 
 A protoseed is simply a data-like URI containing entropy that is used to either backup
-a Bitcoin wallet seed (or any crypto wallet), or providing true 2FA protection
+a Bitcoin wallet seed (or any crypto wallet), or provide true 2FA protection
 (something you know and something you have) for an otherwise software-only wallet. The
 details are explained below.
 
@@ -17,6 +17,8 @@ in use today:
 
  - Exported seed phrase
  - Seedless solutions (like Tangem or Bitkey)
+
+![](src/round.png)
 
 ## Anatomy of a Protoseed
 
