@@ -22,7 +22,7 @@ def generateSeed():
     data = os.urandom(96)
     encoded = base58.b58encode(data).decode('ascii')
 
-    return f'protoseed:{encoded}'
+    return f'protoseed:/p/{encoded}'
 
 
 def generateQR(uri):
@@ -41,7 +41,12 @@ def generateQR(uri):
     #img = qr.make_image(image_factory=StyledPilImage, module_drawer=CircleModuleDrawer())
     #img.save("circular_qr.png")
 
-    qrImage = qr.make_image(fill_color="black", back_color="white", image_factory=StyledPilImage, module_drawer=CircleModuleDrawer()).convert('RGBA')
+    qrImage = qr.make_image(
+        fill_color='black',
+        back_color='white',
+        image_factory=StyledPilImage,
+        module_drawer=CircleModuleDrawer()
+    ).convert('RGBA')
     qrSize = qrImage.size[0]  # QR code width (e.g., 610 pixels for Version 11)
 
     qrImage.save(DIR / "qr.png")
