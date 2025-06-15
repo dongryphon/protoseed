@@ -6,6 +6,9 @@ import os
 import qrcode
 import qrcode.image.svg
 
+#import lxml.etree as ET
+import xml.etree.ElementTree as ET
+
 import segno
 
 from qrcode.image.styles.moduledrawers.svg import SvgPathCircleDrawer
@@ -39,9 +42,42 @@ def generate_qr_svg(data, outputFile, scale=10):
     qr.make(fit=True)
 
     img = qr.make_image(
-        module_drawer=SvgPathCircleDrawer()
+        module_drawer='circle'  # SvgPathCircleDrawer()
     )
-    img.save(outputFile)
+    # img.save(outputFile)
+
+    def stripNs(el):
+        tag = el.tag
+        if '}' in tag:
+            tag = tag.split('}', 1)[1]
+        c = ET.Element(tag)
+        for k, v in el.attrib.items():
+            if k != 'xmlns':
+                c.set(k, v)
+        for sub in el:
+            c2 = stripNs(sub)
+            c.append(c2)
+        return c
+
+    s = img.to_string()
+    svg1 = stripNs(ET.fromstring(s))
+    pathEl = None
+
+    for el in svg1:
+        if el.tag.endswith('path'):
+            pathEl = el
+            break
+
+    if pathEl is not None:
+        svg1.remove(pathEl)
+        ident = pathEl.attrib['id']
+
+        defsEl = ET.Element('defs')
+        svg1.append(defsEl)
+        defsEl.append(pathEl)
+
+        tree = ET.ElementTree(svg1)
+        tree.write(outputFile, encoding='utf-8', xml_declaration=True)
 
 
 def main():
